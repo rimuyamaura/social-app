@@ -1,6 +1,7 @@
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import generateTokenAndSetCookie from '../utils/helpers/generateTokenAndSetCookie.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 const getUserProfile = async (req, res) => {
   const { username } = req.params;
@@ -47,6 +48,8 @@ const signupUser = async (req, res) => {
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,
+        bio: newUser.bio,
+        profilePic: newUser.profilePic,
       });
     } else {
       res.status(400).json({ error: 'Invalid user data' });
@@ -77,6 +80,8 @@ const loginUser = async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      bio: user.bio,
+      profilePic: user.profilePic,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -128,7 +133,9 @@ const followUnfollowUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { name, username, email, password, profilePic, bio } = req.body;
+  const { name, username, email, password, bio } = req.body;
+  let { profilePic } = req.body;
+
   const userId = req.user._id;
   try {
     let user = await User.findById(userId);
@@ -148,6 +155,17 @@ const updateUser = async (req, res) => {
       user.password = hashedPassword;
     }
 
+    if (profilePic) {
+      if (user.profilePic) {
+        await cloudinary.uploader.destroy(
+          user.profilePic.split('/').pop().split('.')[0]
+        );
+      }
+
+      const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+      profilePic = uploadedResponse.secure_url;
+    }
+
     user.name = name || user.name;
     user.username = username || user.username;
     user.email = email || user.email;
@@ -156,7 +174,10 @@ const updateUser = async (req, res) => {
 
     user = await user.save();
 
-    res.status(200).json({ message: 'User updated successfully', user });
+    // Remove password from response
+    user.password = null;
+
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log('Error in updateUser: ', error.message);
