@@ -7,7 +7,7 @@ import {
   AuthPage,
   UpdateProfilePage,
 } from './pages';
-import { Header, LogoutButton } from './components';
+import { Header, LogoutButton, CreatePost } from './components';
 import { useRecoilValue } from 'recoil';
 import userAtom from './atoms/userAtom';
 
@@ -36,6 +36,7 @@ function App() {
       </Routes>
 
       {user && <LogoutButton />}
+      {user && <CreatePost />}
     </Container>
   );
 }

@@ -7,3 +7,5 @@ export { default as Comment } from './Comment';
 export { default as SignupCard } from './SignupCard';
 export { default as LoginCard } from './LoginCard';
 export { default as LogoutButton } from './LogoutButton';
+
+export { default as CreatePost } from './CreatePost';
