@@ -9,3 +9,4 @@ export { default as LoginCard } from './LoginCard';
 export { default as LogoutButton } from './LogoutButton';
 
 export { default as CreatePost } from './CreatePost';
+export { default as Post } from './Post';
