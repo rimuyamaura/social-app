@@ -14,8 +14,8 @@ const router = express.Router();
 router.get('/feed', protectRoute, getFeedPosts);
 router.get('/:id', getPost);
 router.post('/create', protectRoute, createPost);
-router.post('/like/:id', protectRoute, likeUnlikePost);
-router.post('/reply/:id', protectRoute, replyToPost);
+router.put('/like/:id', protectRoute, likeUnlikePost);
+router.put('/reply/:id', protectRoute, replyToPost);
 router.delete('/:id', protectRoute, deletePost);
 
 export default router;
