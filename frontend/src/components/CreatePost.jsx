@@ -19,12 +19,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
-import usePreviewImg from '../hooks/usePreviewImg';
+import { useRecoilValue } from 'recoil';
 import { BsFillImageFill } from 'react-icons/bs';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import usePreviewImg from '../hooks/usePreviewImg';
 import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
-import { useParams } from 'react-router-dom';
 
 const MAX_CHAR = 500;
 

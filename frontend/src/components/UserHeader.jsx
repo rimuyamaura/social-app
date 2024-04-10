@@ -16,19 +16,19 @@ import {
 import { BsInstagram } from 'react-icons/bs';
 import { CgMoreO } from 'react-icons/cg';
 import { useRecoilValue } from 'recoil';
-import userAtom from '../atoms/userAtom';
 import { Link as RouterLink } from 'react-router-dom';
 import { useState } from 'react';
+import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // get the logged in user
   const [following, setFollowing] = useState(
-    user.followers.includes(currentUser._id)
+    user.followers.includes(currentUser?._id)
   );
-  const showToast = useShowToast();
   const [updating, setUpdating] = useState(false);
+  const showToast = useShowToast();
 
   const copyURL = () => {
     const currentURL = window.location.href;
@@ -73,7 +73,7 @@ const UserHeader = ({ user }) => {
         user.followers.pop(); // simulate removing from followers
       } else {
         showToast('Success', `Followed ${user.name}`, 'success');
-        user.followers.push(currentUser._id); // simulate adding to followers
+        user.followers.push(currentUser?._id); // simulate adding to followers
       }
 
       setFollowing(!following);
@@ -126,22 +126,16 @@ const UserHeader = ({ user }) => {
 
       <Text>{user.bio}</Text>
 
-      {currentUser && currentUser.username === user.username && (
+      {currentUser?._id === user._id && (
         <Link as={RouterLink} to='/update'>
           <Button size={'sm'}>Edit Profile</Button>
         </Link>
       )}
 
-      {currentUser && currentUser.username !== user.username && (
-        <Link>
-          <Button
-            size={'sm'}
-            onClick={handleFollowUnfollow}
-            isLoading={updating}
-          >
-            {following ? 'Unfollow' : 'Follow'}
-          </Button>
-        </Link>
+      {currentUser?._id !== user._id && (
+        <Button size={'sm'} onClick={handleFollowUnfollow} isLoading={updating}>
+          {following ? 'Unfollow' : 'Follow'}
+        </Button>
       )}
 
       <Flex w={'full'} justifyContent={'space-between'}>

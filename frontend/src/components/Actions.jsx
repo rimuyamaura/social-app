@@ -1,4 +1,19 @@
-import { Flex, Text, Box } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  FormControl,
+  Input,
+  Button,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from '../atoms/userAtom';
@@ -7,9 +22,13 @@ import useShowToast from '../hooks/useShowToast';
 const Actions = ({ post: post_ }) => {
   const user = useRecoilValue(userAtom);
   const [liked, setLiked] = useState(post_.likes.includes(user?._id));
-  const showToast = useShowToast();
   const [post, setPost] = useState(post_);
   const [isLiking, setIsLiking] = useState(false);
+  const [reply, setReply] = useState('');
+  const [isReplying, setIsReplying] = useState(false);
+  const showToast = useShowToast();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLikeAndUnlike = async () => {
     if (!user)
@@ -48,6 +67,42 @@ const Actions = ({ post: post_ }) => {
       setIsLiking(false);
     }
   };
+
+  const handleReply = async () => {
+    if (!user)
+      return showToast(
+        'An error has occured',
+        'You need to be logged in to reply to a post',
+        'error'
+      );
+    if (isReplying) return;
+    setIsReplying(true);
+
+    try {
+      const res = await fetch('/api/posts/reply/' + post._id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: reply }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        return showToast('An error has occured', data.error, 'error');
+      }
+
+      setPost({ ...post, replies: [...post.replies, data.reply] });
+      showToast('Success', 'Reply posted successfully', 'success');
+      console.log(data);
+      onClose();
+      setReply('');
+    } catch (error) {
+      showToast('An error has occured', error.message, 'error');
+    } finally {
+      setIsReplying(false);
+    }
+  };
   return (
     <Flex flexDirection='column'>
       <Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
@@ -76,6 +131,7 @@ const Actions = ({ post: post_ }) => {
           role='img'
           viewBox='0 0 24 24'
           width='20'
+          onClick={onOpen}
         >
           <title>Comment</title>
           <path
@@ -90,6 +146,7 @@ const Actions = ({ post: post_ }) => {
         <RepostSVG />
         <ShareSVG />
       </Flex>
+
       <Flex gap={2} alignItems={'center'}>
         <Text color={'gray.light'} fontSize='sm'>
           {post.replies.length} replies
@@ -99,6 +156,34 @@ const Actions = ({ post: post_ }) => {
           {post.likes.length} likes
         </Text>
       </Flex>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <Input
+                placeholder='Reply goes here..'
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme='blue'
+              size={'sm'}
+              mr={3}
+              isLoading={isReplying}
+              onClick={handleReply}
+            >
+              Reply
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };
