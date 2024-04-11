@@ -28,6 +28,6 @@ const useGetUserProfile = () => {
     getUser();
   }, [username, showToast]);
 
-  return { user, loading };
+  return { loading, user };
 };
 export default useGetUserProfile;
