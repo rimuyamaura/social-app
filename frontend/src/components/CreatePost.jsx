@@ -17,7 +17,6 @@ import {
   Textarea,
   useColorModeValue,
   useDisclosure,
-  Spacer,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -26,6 +25,7 @@ import usePreviewImg from '../hooks/usePreviewImg';
 import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
 import { useRecoilState } from 'recoil';
+import { useParams } from 'react-router-dom';
 import postsAtom from '../atoms/postsAtom';
 
 const MAX_CHAR = 500;
@@ -41,6 +41,7 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
   const showToast = useShowToast();
   const [posts, setPosts] = useRecoilState(postsAtom);
+  const { username } = useParams();
 
   const handleTextChange = (e) => {
     const inputText = e.target.value;
@@ -76,7 +77,10 @@ const CreatePost = () => {
         return;
       }
       showToast('Success', 'Your post has been created', 'success');
-      setPosts([data, ...posts]);
+      if (username === user.username) {
+        setPosts([data, ...posts]);
+      }
+
       onClose();
 
       setPostText('');

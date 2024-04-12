@@ -31,7 +31,7 @@ const UserPage = () => {
     };
     getPosts();
   }, [username, showToast, setPosts]);
-  console.log('recoil posts is here', posts);
+  // console.log('recoil posts is here', posts);
 
   if (!user && loading) {
     return (

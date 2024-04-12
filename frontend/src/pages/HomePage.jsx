@@ -12,6 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     const getFeedPosts = async () => {
+      setPosts([]);
       setLoading(true);
       try {
         const res = await fetch('/api/posts/feed');

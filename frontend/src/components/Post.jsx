@@ -55,6 +55,7 @@ const Post = ({ post, postedBy }) => {
   };
 
   if (!user) return null;
+  console.log(posts);
 
   return (
     <>
@@ -70,7 +71,7 @@ const Post = ({ post, postedBy }) => {
                 navigate(`/${user.username}`);
               }}
             />
-            <Box w='1px' h={'full'} bg='gray.light' my={2}></Box>
+            <Box w={'1px'} h={'full'} bg={'gray.light'} my={2}></Box>
             <Box position={'relative'} w={'full'}>
               {post.replies.length === 0 && (
                 <Text textAlign='center'> 🥱 </Text>
@@ -78,33 +79,33 @@ const Post = ({ post, postedBy }) => {
               {post.replies[0] && (
                 <Avatar
                   size='xs'
-                  name='John doe'
-                  src={post.replies[0].userprofilePic}
+                  name={post.replies[0].username}
+                  src={post.replies[0].userProfilePic}
                   position={'absolute'}
                   top={'0px'}
-                  left='15px'
+                  left={'15px'}
                   padding={'2px'}
                 />
               )}
               {post.replies[1] && (
                 <Avatar
                   size='xs'
-                  name='John doe'
+                  name={post.replies[1].username}
                   src={post.replies[1].userprofilePic}
                   position={'absolute'}
                   top={'0px'}
-                  right='15px'
+                  right={'-5px'}
                   padding={'2px'}
                 />
               )}
               {post.replies[2] && (
                 <Avatar
                   size='xs'
-                  name='John doe'
+                  name={post.replies[2].username}
                   src={post.replies[2].userprofilePic}
                   position={'absolute'}
                   top={'0px'}
-                  right='30px'
+                  left={'4px'}
                   padding={'2px'}
                 />
               )}
