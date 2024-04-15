@@ -1,4 +1,4 @@
-import { Container } from '@chakra-ui/react';
+import { Container, Box } from '@chakra-ui/react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import {
   HomePage,
@@ -6,6 +6,7 @@ import {
   PostPage,
   AuthPage,
   UpdateProfilePage,
+  ChatPage,
 } from './pages';
 import { Header, CreatePost } from './components';
 import { useRecoilValue } from 'recoil';
@@ -15,38 +16,44 @@ function App() {
   const user = useRecoilValue(userAtom);
   console.log(user);
   return (
-    <Container maxW='620px'>
-      <Header />
-      <Routes>
-        <Route
-          path='/'
-          element={user ? <HomePage /> : <Navigate to='/auth' />}
-        />
-        <Route
-          path='/auth'
-          element={!user ? <AuthPage /> : <Navigate to='/' />}
-        />
-        <Route
-          path='/update'
-          element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />}
-        />
+    <Box position={'relative'} w={'full'}>
+      <Container maxW='620px'>
+        <Header />
+        <Routes>
+          <Route
+            path='/'
+            element={user ? <HomePage /> : <Navigate to='/auth' />}
+          />
+          <Route
+            path='/auth'
+            element={!user ? <AuthPage /> : <Navigate to='/' />}
+          />
+          <Route
+            path='/update'
+            element={user ? <UpdateProfilePage /> : <Navigate to='/auth' />}
+          />
 
-        <Route
-          path='/:username'
-          element={
-            user ? (
-              <>
+          <Route
+            path='/:username'
+            element={
+              user ? (
+                <>
+                  <UserPage />
+                  <CreatePost />
+                </>
+              ) : (
                 <UserPage />
-                <CreatePost />
-              </>
-            ) : (
-              <UserPage />
-            )
-          }
-        />
-        <Route path='/:username/post/:pid' element={<PostPage />} />
-      </Routes>
-    </Container>
+              )
+            }
+          />
+          <Route path='/:username/post/:pid' element={<PostPage />} />
+          <Route
+            path='/chat'
+            element={user ? <ChatPage /> : <Navigate to={'/auth'} />}
+          />
+        </Routes>
+      </Container>
+    </Box>
   );
 }
 

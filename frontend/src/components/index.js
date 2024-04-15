@@ -9,3 +9,8 @@ export { default as LoginCard } from './LoginCard';
 
 export { default as CreatePost } from './CreatePost';
 export { default as Post } from './Post';
+
+export { default as Conversation } from './Conversation';
+export { default as MessageContainer } from './MessageContainer';
+export { default as Message } from './Message';
+export { default as MessageInput } from './MessageInput';

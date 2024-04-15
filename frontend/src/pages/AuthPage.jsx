@@ -1,4 +1,4 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { SignupCard, LoginCard } from '../components';
 import authScreenAtom from '../atoms/authAtom';
 
