@@ -11,8 +11,44 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { Conversation, MessageContainer } from '../components';
 import { GiConversation } from 'react-icons/gi';
+import { useEffect, useState } from 'react';
+import useShowToast from '../hooks/useShowToast';
+import { useRecoilState } from 'recoil';
+import {
+  conversationsAtom,
+  selectedConversationAtom,
+} from '../atoms/messagesAtom';
 
 const ChatPage = () => {
+  const showToast = useShowToast();
+  const [loadingConversations, setLoadingConversations] = useState(true);
+  const [conversations, setConversations] = useRecoilState(conversationsAtom);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationAtom
+  );
+
+  useEffect(() => {
+    const getConversations = async () => {
+      try {
+        const res = await fetch('/api/messages/conversations');
+        const data = await res.json();
+        if (data.error) {
+          showToast('An error has occured', data.error, 'error');
+          return;
+        }
+
+        console.log(data);
+        setConversations(data);
+      } catch (error) {
+        showToast('An error has occured', error.message, 'error');
+      } finally {
+        setLoadingConversations(false);
+      }
+    };
+
+    getConversations();
+  }, [showToast, setConversations]);
+
   return (
     <Box
       position={'absolute'}
@@ -53,7 +89,7 @@ const ChatPage = () => {
             </Flex>
           </form>
 
-          {false &&
+          {loadingConversations &&
             [0, 1, 2, 3, 4].map((_, i) => (
               <Flex
                 key={i}
@@ -72,26 +108,31 @@ const ChatPage = () => {
               </Flex>
             ))}
 
-          <Conversation />
-          <Conversation />
-          <Conversation />
-          <Conversation />
+          {!loadingConversations &&
+            conversations.map((conversation) => (
+              <Conversation
+                key={conversation._id}
+                conversation={conversation}
+              />
+            ))}
         </Flex>
 
-        {/* <Flex
-          flex={70}
-          borderRadius={'md'}
-          p={2}
-          flexDirection={'column'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          height={'400px'}
-        >
-          <GiConversation size={100} />
-          <Text fontSize={20}>Select a conversation to get started</Text>
-        </Flex> */}
+        {!selectedConversation._id && (
+          <Flex
+            flex={70}
+            borderRadius={'md'}
+            p={2}
+            flexDirection={'column'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            height={'400px'}
+          >
+            <GiConversation size={100} />
+            <Text fontSize={20}>Select a conversation to get started</Text>
+          </Flex>
+        )}
 
-        <MessageContainer />
+        {selectedConversation._id && <MessageContainer />}
       </Flex>
     </Box>
   );
