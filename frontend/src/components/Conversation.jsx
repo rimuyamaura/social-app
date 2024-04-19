@@ -14,14 +14,16 @@ import { BsCheck2All } from 'react-icons/bs';
 import { selectedConversationAtom } from '../atoms/messagesAtom';
 
 const Conversation = ({ conversation }) => {
-  const currentUser = useRecoilValue(userAtom);
   const user = conversation.participants[0];
+  const currentUser = useRecoilValue(userAtom);
   const lastMessage = conversation.lastMessage;
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAtom
   );
 
-  console.log('selected', selectedConversation);
+  console.log('selected conversation', selectedConversation);
+  // console.log('user: ', user);
+  // console.log('conversation: ', conversation);
   return (
     <Flex
       gap={4}
@@ -37,12 +39,13 @@ const Conversation = ({ conversation }) => {
         setSelectedConversation({
           _id: conversation._id,
           userId: user._id,
-          username: user.username,
           userProfilePic: user.profilePic,
+          username: user.username,
+          mock: conversation.mock,
         })
       }
       bg={
-        selectedConversation._id === conversation._id
+        selectedConversation?._id === conversation._id
           ? useColorModeValue('gray.400', 'gray.dark')
           : ''
       }
