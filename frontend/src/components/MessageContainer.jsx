@@ -12,7 +12,7 @@ import Message from './Message';
 import MessageInput from './MessageInput';
 import { useEffect, useRef, useState } from 'react';
 import useShowToast from '../hooks/useShowToast';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   conversationsAtom,
   selectedConversationAtom,
@@ -21,16 +21,14 @@ import userAtom from '../atoms/userAtom';
 import { useSocket } from '../context/SocketContext';
 
 const MessageContainer = () => {
-  const showToast = useShowToast();
-  const [selectedConversation, setSelectedConversation] = useRecoilState(
-    selectedConversationAtom
-  );
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [messages, setMessages] = useState([]);
+  const selectedConversation = useRecoilValue(selectedConversationAtom);
   const currentUser = useRecoilValue(userAtom);
-  const { socket } = useSocket();
   const setConversations = useSetRecoilState(conversationsAtom);
+  const { socket } = useSocket();
   const lastMessageRef = useRef(null);
+  const showToast = useShowToast();
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -56,7 +54,36 @@ const MessageContainer = () => {
     });
 
     return () => socket.off('newMessage');
-  }, [socket]);
+  }, [socket, selectedConversation, setConversations]);
+
+  useEffect(() => {
+    const lastMessageIsFromOtherUser =
+      messages.length &&
+      messages[messages.length - 1].sender !== currentUser._id;
+    if (lastMessageIsFromOtherUser) {
+      socket.emit('markMessagesAsSeen', {
+        conversationId: selectedConversation._id,
+        userId: selectedConversation.userId,
+      });
+    }
+
+    socket.on('messagesSeen', ({ conversationId }) => {
+      if (selectedConversation._id === conversationId) {
+        setMessages((prev) => {
+          const updatedMessages = prev.map((message) => {
+            if (!message.seen) {
+              return {
+                ...message,
+                seen: true,
+              };
+            }
+            return message;
+          });
+          return updatedMessages;
+        });
+      }
+    });
+  }, [socket, currentUser._id, messages, selectedConversation]);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -82,7 +109,7 @@ const MessageContainer = () => {
     };
 
     getMessages();
-  }, [showToast, selectedConversation.userId]);
+  }, [showToast, selectedConversation.userId, selectedConversation.mock]);
 
   return (
     <Flex

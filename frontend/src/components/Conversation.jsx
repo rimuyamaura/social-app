@@ -1,16 +1,18 @@
 import {
-  Flex,
-  useColorModeValue,
-  WrapItem,
   Avatar,
   AvatarBadge,
+  Box,
+  Flex,
+  Image,
   Stack,
   Text,
-  Image,
+  WrapItem,
+  useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom';
-import { BsCheck2All } from 'react-icons/bs';
+import { BsCheck2All, BsImageFill } from 'react-icons/bs';
 import { selectedConversationAtom } from '../atoms/messagesAtom';
 
 const Conversation = ({ conversation, isOnline }) => {
@@ -20,8 +22,9 @@ const Conversation = ({ conversation, isOnline }) => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAtom
   );
+  const colorMode = useColorMode();
 
-  console.log('selected conversation', selectedConversation);
+  // console.log('selected conversation', selectedConversation);
   // console.log('user: ', user);
   // console.log('conversation: ', conversation);
   return (
@@ -46,7 +49,9 @@ const Conversation = ({ conversation, isOnline }) => {
       }
       bg={
         selectedConversation?._id === conversation._id
-          ? useColorModeValue('gray.400', 'gray.dark')
+          ? colorMode === 'light'
+            ? 'gray.400'
+            : 'gray.dark'
           : ''
       }
     >
@@ -69,13 +74,15 @@ const Conversation = ({ conversation, isOnline }) => {
         </Text>
         <Text fontSize={'xs'} display={'flex'} alignItems={'center'} gap={1}>
           {currentUser._id === lastMessage.sender ? (
-            <BsCheck2All size={16} />
+            <Box color={lastMessage.seen ? 'orange.300' : ''}>
+              <BsCheck2All size={16} />
+            </Box>
           ) : (
             ''
           )}
           {lastMessage.text.length > 18
             ? lastMessage.text.substring(0, 18) + '...'
-            : lastMessage.text}
+            : lastMessage.text || <BsImageFill size={16} />}
         </Text>
       </Stack>
     </Flex>
