@@ -1,5 +1,5 @@
 import { Container, Box } from '@chakra-ui/react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import {
   HomePage,
   UserPage,
@@ -14,10 +14,14 @@ import userAtom from './atoms/userAtom';
 
 function App() {
   const user = useRecoilValue(userAtom);
-  console.log(user);
+
+  const { pathname } = useLocation();
+
   return (
     <Box position={'relative'} w={'full'}>
-      <Container maxW='620px'>
+      <Container
+        maxW={pathname === '/' ? { base: '620px', md: '900px' } : '620px'}
+      >
         <Header />
         <Routes>
           <Route

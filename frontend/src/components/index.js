@@ -14,3 +14,6 @@ export { default as Conversation } from './Conversation';
 export { default as MessageContainer } from './MessageContainer';
 export { default as Message } from './Message';
 export { default as MessageInput } from './MessageInput';
+
+export { default as SuggestedUsers } from './SuggestedUsers';
+export { default as SuggestedUser } from './SuggestedUser';
