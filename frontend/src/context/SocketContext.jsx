@@ -15,7 +15,10 @@ export const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   useEffect(() => {
-    const socket = io('http://localhost:5000', {
+    const socketUrl =
+      process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5000';
+    console.log(socketUrl);
+    const socket = io(socketUrl, {
       query: {
         userId: user?._id,
       },
@@ -30,7 +33,7 @@ export const SocketContextProvider = ({ children }) => {
     return () => socket && socket.close();
   }, [user?._id]);
 
-  console.log(onlineUsers);
+  console.log('Online:', onlineUsers);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>

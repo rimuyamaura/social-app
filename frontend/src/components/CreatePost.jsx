@@ -19,29 +19,27 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { BsFillImageFill } from 'react-icons/bs';
 import usePreviewImg from '../hooks/usePreviewImg';
-import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
-import { useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
+import userAtom from '../atoms/userAtom';
 import postsAtom from '../atoms/postsAtom';
 
 const MAX_CHAR = 500;
 
 const CreatePost = () => {
   const user = useRecoilValue(userAtom);
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [postText, setPostText] = useState('');
-  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
-  const imageRef = useRef(null);
-  const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
   const [loading, setLoading] = useState(false);
-  const showToast = useShowToast();
+  const [postText, setPostText] = useState('');
+  const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
   const [posts, setPosts] = useRecoilState(postsAtom);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
   const { username } = useParams();
+  const imageRef = useRef(null);
+  const showToast = useShowToast();
 
   const handleTextChange = (e) => {
     const inputText = e.target.value;
@@ -66,7 +64,7 @@ const CreatePost = () => {
         },
         body: JSON.stringify({
           postedBy: user._id,
-          text: postText,
+          text: postText || '',
           img: imgUrl,
         }),
       });
@@ -82,11 +80,15 @@ const CreatePost = () => {
       }
 
       onClose();
-
       setPostText('');
       setImgUrl('');
     } catch (error) {
-      showToast('An error has occured', error.message, 'error');
+      // showToast('An error has occured', error.message, 'error');
+      showToast(
+        'An error has occured',
+        'Please make sure you have input all areas correctly',
+        'error'
+      );
     } finally {
       setLoading(false);
     }
