@@ -80,7 +80,7 @@ const Conversation = ({ conversation, isOnline }) => {
           ) : (
             ''
           )}
-          {lastMessage.text && lastMessage.text.length > 0 ? (
+          {/* {lastMessage.text && lastMessage.text.length > 0 ? (
             lastMessage.text.length > 18 ? (
               lastMessage.text.substring(0, 18) + '...'
             ) : (
@@ -88,7 +88,10 @@ const Conversation = ({ conversation, isOnline }) => {
             )
           ) : (
             <Text> start messaging! </Text>
-          )}
+          )} */}
+          {lastMessage.text.length > 18
+            ? lastMessage.text.substring(0, 18) + '...'
+            : lastMessage.text || <BsImageFill size={16} />}
         </Text>
       </Stack>
     </Flex>
