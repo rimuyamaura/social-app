@@ -46,7 +46,7 @@ const UserHeader = ({ user }) => {
             {user.name}
           </Text>
           <Flex gap={2} alignItems={'center'}>
-            <Text fontSize={'sm'}>{user.username}</Text>
+            <Text fontSize={'sm'}>@{user.username}</Text>
             <Text
               fontSize={'xs'}
               bg={'gray.dark'}
@@ -54,7 +54,7 @@ const UserHeader = ({ user }) => {
               p={1}
               borderRadius={'full'}
             >
-              threads.net
+              social-app.com
             </Text>
           </Flex>
         </Box>
@@ -93,8 +93,8 @@ const UserHeader = ({ user }) => {
       <Flex w={'full'} justifyContent={'space-between'}>
         <Flex gap={2} alignItems={'center'}>
           <Text color={'gray.light'}>{user.followers.length} followers</Text>
-          <Box w='1' h='1' bg={'gray.light'} borderRadius={'full'}></Box>
-          <Link color={'gray.light'}>instagram.com</Link>
+          {/* <Box w='1' h='1' bg={'gray.light'} borderRadius={'full'}></Box> */}
+          {/* <Link color={'gray.light'}>instagram.com</Link> */}
         </Flex>
         <Flex>
           <Box className='icon-container'>

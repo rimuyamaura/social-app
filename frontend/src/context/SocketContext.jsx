@@ -17,7 +17,7 @@ export const SocketContextProvider = ({ children }) => {
   useEffect(() => {
     const socketUrl =
       process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5000';
-    console.log(socketUrl);
+    // console.log(socketUrl);
     const socket = io(socketUrl, {
       query: {
         userId: user?._id,

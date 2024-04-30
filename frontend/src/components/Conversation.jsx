@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import userAtom from '../atoms/userAtom';
-import { BsCheck, BsCheck2All, BsImageFill } from 'react-icons/bs';
+import { BsCheck2All, BsImageFill } from 'react-icons/bs';
 import { selectedConversationAtom } from '../atoms/messagesAtom';
 
 const Conversation = ({ conversation, isOnline }) => {
@@ -24,9 +24,9 @@ const Conversation = ({ conversation, isOnline }) => {
   );
   const colorMode = useColorMode();
 
-  // console.log('selected conversation', selectedConversation);
-  // console.log('user: ', user);
   // console.log('conversation: ', conversation);
+  // console.log('lastMessage by: ', lastMessage.sender);
+
   return (
     <Flex
       gap={4}
@@ -80,18 +80,15 @@ const Conversation = ({ conversation, isOnline }) => {
           ) : (
             ''
           )}
-          {/* {lastMessage.text && lastMessage.text.length > 0 ? (
+          {lastMessage.sender ? (
             lastMessage.text.length > 18 ? (
               lastMessage.text.substring(0, 18) + '...'
             ) : (
-              lastMessage.text
+              lastMessage.text || <BsImageFill size={16} />
             )
           ) : (
             <Text> start messaging! </Text>
-          )} */}
-          {lastMessage.text.length > 18
-            ? lastMessage.text.substring(0, 18) + '...'
-            : lastMessage.text || <BsImageFill size={16} />}
+          )}
         </Text>
       </Stack>
     </Flex>
