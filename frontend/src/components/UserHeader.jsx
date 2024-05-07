@@ -12,6 +12,7 @@ import {
   MenuItem,
   useToast,
   Button,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { BsInstagram } from 'react-icons/bs';
 import { CgMoreO } from 'react-icons/cg';
@@ -23,6 +24,8 @@ import useFollowUnfollow from '../hooks/useFollowUnfollow';
 const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // get the logged in user
+
+  console.log(user);
 
   const { handleFollowUnfollow, updating, following } = useFollowUnfollow(user);
 
@@ -42,19 +45,19 @@ const UserHeader = ({ user }) => {
     <VStack gap={4} alignItems={'start'}>
       <Flex justifyContent={'space-between'} w={'full'}>
         <Box>
-          <Text fontSize={'2xl'} fontWeight={'bold'}>
+          <Text fontSize={'2xl'} fontWeight={'bold'} mb={2}>
             {user.name}
           </Text>
           <Flex gap={2} alignItems={'center'}>
-            <Text fontSize={'sm'}>@{user.username}</Text>
             <Text
-              fontSize={'xs'}
-              bg={'gray.dark'}
-              color={'gray.light'}
-              p={1}
+              fontSize={'sm'}
+              bg={useColorModeValue('gray.300', 'gray.dark')}
+              color={useColorModeValue('gray.dark', 'gray.400')}
+              p={0.5}
+              px={2}
               borderRadius={'full'}
             >
-              social-app.com
+              @{user.username}
             </Text>
           </Flex>
         </Box>
@@ -76,31 +79,55 @@ const UserHeader = ({ user }) => {
         </Box>
       </Flex>
 
-      <Text>{user.bio}</Text>
-
-      {currentUser?._id === user._id && (
-        <Link as={RouterLink} to='/update'>
-          <Button size={'sm'}>Edit Profile</Button>
-        </Link>
-      )}
-
-      {currentUser?._id !== user._id && (
-        <Button size={'sm'} onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? 'Unfollow' : 'Follow'}
-        </Button>
-      )}
+      <Text fontSize={'sm'}>{user.bio}</Text>
+      <Flex gap={4} alignItems={'center'}>
+        <Text color={'gray.light'} fontSize={'sm'}>
+          <span style={{ fontWeight: '500' }}>{user.followers.length} </span>
+          followers
+        </Text>
+        <Text color={'gray.light'} fontSize={'sm'}>
+          <span style={{ fontWeight: '500' }}>{user.following.length} </span>
+          following
+        </Text>
+        {/* <Link color={'gray.light'}>instagram.com</Link> */}
+      </Flex>
 
       <Flex w={'full'} justifyContent={'space-between'}>
-        <Flex gap={2} alignItems={'center'}>
-          <Text color={'gray.light'}>{user.followers.length} followers</Text>
-          {/* <Box w='1' h='1' bg={'gray.light'} borderRadius={'full'}></Box> */}
-          {/* <Link color={'gray.light'}>instagram.com</Link> */}
+        <Flex gap={4} alignItems={'center'}>
+          {currentUser?._id === user._id && (
+            <Link as={RouterLink} to='/update'>
+              <Button
+                size={'sm'}
+                bg={useColorModeValue('gray.300', 'gray.dark')}
+                _hover={{ bg: useColorModeValue('gray.400', 'gray.700') }}
+              >
+                Edit Profile
+              </Button>
+            </Link>
+          )}
+          {currentUser?._id !== user._id && (
+            <Button
+              size={'sm'}
+              onClick={handleFollowUnfollow}
+              isLoading={updating}
+              bg={useColorModeValue('gray.300', 'gray.dark')}
+              _hover={{ bg: useColorModeValue('gray.400', 'gray.700') }}
+            >
+              {following ? 'Unfollow' : 'Follow'}
+            </Button>
+          )}
         </Flex>
         <Flex>
-          <Box className='icon-container'>
+          <Box
+            className='icon-container'
+            _hover={{ bg: useColorModeValue('gray.400', 'gray.700') }}
+          >
             <BsInstagram size={24} cursor={'pointer'} />
           </Box>
-          <Box className='icon-container'>
+          <Box
+            className='icon-container'
+            _hover={{ bg: useColorModeValue('gray.400', 'gray.700') }}
+          >
             <Menu>
               <MenuButton>
                 <CgMoreO size={24} cursor={'pointer'} />
