@@ -22,7 +22,6 @@ const Conversation = ({ conversation, isOnline }) => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAtom
   );
-  const colorMode = useColorMode();
 
   // console.log('conversation: ', conversation);
   // console.log('lastMessage by: ', lastMessage.sender);
@@ -34,8 +33,7 @@ const Conversation = ({ conversation, isOnline }) => {
       p={'1'}
       _hover={{
         cursor: 'pointer',
-        bg: useColorModeValue('gray.600', 'gray.dark'),
-        color: 'white',
+        bg: useColorModeValue('gray.300', 'gray.dark'),
       }}
       borderRadius={'md'}
       onClick={() =>
@@ -49,9 +47,7 @@ const Conversation = ({ conversation, isOnline }) => {
       }
       bg={
         selectedConversation?._id === conversation._id
-          ? colorMode === 'light'
-            ? 'gray.400'
-            : 'gray.dark'
+          ? useColorModeValue('gray.300', 'gray.dark')
           : ''
       }
     >

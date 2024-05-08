@@ -12,6 +12,7 @@ import {
   Image,
   Spinner,
   useDisclosure,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -95,6 +96,11 @@ const MessageInput = ({ setMessages }) => {
             placeholder='Type a message'
             onChange={(e) => setMessageText(e.target.value)}
             value={messageText}
+            border={'1px solid'}
+            borderColor={useColorModeValue('gray.300', 'gray.700')}
+            _hover={{
+              borderColor: useColorModeValue('gray.400', 'gray.600'),
+            }}
           />
           <InputRightElement cursor={'pointer'} onClick={handleSendMessage}>
             <IoSendSharp />

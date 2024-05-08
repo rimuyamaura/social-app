@@ -134,7 +134,7 @@ const MessageContainer = () => {
         </Text>
       </Flex>
 
-      <Divider />
+      <Divider borderColor={useColorModeValue('gray.400', 'gray.600')} />
 
       <Flex
         flexDir={'column'}

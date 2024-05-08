@@ -168,11 +168,19 @@ const ChatPage = () => {
               <Input
                 placeholder='Search for a user'
                 onChange={(e) => setSearchText(e.target.value)}
+                border={'1px solid'}
+                borderColor={useColorModeValue('gray.300', 'gray.800')}
+                _hover={{
+                  borderColor: useColorModeValue('gray.400', 'gray.700'),
+                }}
               />
               <Button
                 size={'sm'}
                 onClick={handleConversationSearch}
                 isLoading={searchingUser}
+                bg={useColorModeValue('gray.300', 'gray.dark')}
+                _hover={{ bg: useColorModeValue('gray.400', 'gray.700') }}
+                rounded={'full'}
               >
                 <SearchIcon />
               </Button>
