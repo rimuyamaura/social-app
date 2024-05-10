@@ -3,9 +3,10 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import {
   HomePage,
   UserPage,
+  UpdateProfilePage,
+  FollowerPage,
   PostPage,
   AuthPage,
-  UpdateProfilePage,
   ChatPage,
 } from './pages';
 import { Header, CreatePost } from './components';
@@ -51,6 +52,7 @@ function App() {
             }
           />
           <Route path='/:username/post/:pid' element={<PostPage />} />
+          <Route path='/:username/:following' element={<FollowerPage />} />
           <Route
             path='/chat'
             element={user ? <ChatPage /> : <Navigate to={'/auth'} />}

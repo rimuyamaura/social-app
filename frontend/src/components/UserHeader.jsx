@@ -25,7 +25,7 @@ const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // get the logged in user
 
-  console.log(user);
+  // console.log(user);
 
   const { handleFollowUnfollow, updating, following } = useFollowUnfollow(user);
 
@@ -81,14 +81,24 @@ const UserHeader = ({ user }) => {
 
       <Text fontSize={'sm'}>{user.bio}</Text>
       <Flex gap={4} alignItems={'center'}>
-        <Text color={'gray.light'} fontSize={'sm'}>
-          <span style={{ fontWeight: '500' }}>{user.followers.length} </span>
-          followers
-        </Text>
-        <Text color={'gray.light'} fontSize={'sm'}>
+        <Link
+          as={RouterLink}
+          to={`/${user.username}/following`}
+          color={'gray.light'}
+          fontSize={'sm'}
+        >
           <span style={{ fontWeight: '500' }}>{user.following.length} </span>
           following
-        </Text>
+        </Link>
+        <Link
+          as={RouterLink}
+          to={`/${user.username}/followers`}
+          color={'gray.light'}
+          fontSize={'sm'}
+        >
+          <span style={{ fontWeight: '500' }}>{user.followers.length} </span>
+          followers
+        </Link>
         {/* <Link color={'gray.light'}>instagram.com</Link> */}
       </Flex>
 

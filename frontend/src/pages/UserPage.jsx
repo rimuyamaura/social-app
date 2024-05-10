@@ -1,11 +1,10 @@
-import { useParams } from 'react-router-dom';
-import { UserHeader, UserPost } from '../components';
-import { useEffect, useState } from 'react';
-import useShowToast from '../hooks/useShowToast';
 import { Flex, Spinner } from '@chakra-ui/react';
-import { Post } from '../components';
-import useGetUserProfile from '../hooks/useGetUserProfile';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { UserHeader, Post } from '../components';
+import useShowToast from '../hooks/useShowToast';
+import useGetUserProfile from '../hooks/useGetUserProfile';
 import postsAtom from '../atoms/postsAtom';
 
 const UserPage = () => {
@@ -31,7 +30,6 @@ const UserPage = () => {
     };
     getPosts();
   }, [username, showToast, setPosts]);
-  // console.log('recoil posts is here', posts);
 
   if (!user && loading) {
     return (
