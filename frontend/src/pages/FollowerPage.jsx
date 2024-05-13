@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import { Flex, Spinner, Text, Link } from '@chakra-ui/react';
-import useGetUserProfile from '../hooks/useGetUserProfile';
 import { UserCard } from '../components';
+import useGetUserProfile from '../hooks/useGetUserProfile';
 
 const FollowerPage = () => {
   const { user, loading } = useGetUserProfile();
@@ -13,14 +13,20 @@ const FollowerPage = () => {
   useEffect(() => {
     if (!user) return;
     const getUsersList = () => {
-      const users = following === 'followers' ? user.followers : user.following;
-      setUsersList(users);
+      fetch(`/api/users/${user.username}/${following}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setUsersList(data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     };
     getUsersList();
   }, [user, following]);
 
-  console.log('user:', user);
-  console.log(following, usersList);
+  // console.log('user:', user);
+  // console.log(following, usersList);
 
   if (loading) {
     return (
@@ -88,8 +94,8 @@ const FollowerPage = () => {
           )}
         </Flex>
       </Flex>
-      {usersList.map((id) => (
-        <UserCard key={id} id={id} />
+      {usersList.map((user) => (
+        <UserCard key={user._id} user={user} />
       ))}
     </>
   );

@@ -34,6 +34,42 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const getFollowers = async (req, res) => {
+  const { username } = req.params;
+  try {
+    let followers = [];
+    const followerIds = await User.findOne({ username }).select('followers');
+    followers = await User.find({ _id: { $in: followerIds.followers } })
+      .select('-password')
+      .select('-updatedAt')
+      .select('-following')
+      .select('-followers');
+
+    res.status(200).json(followers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log('Error in getFollowers: ', error.message);
+  }
+};
+
+const getFollowing = async (req, res) => {
+  const { username } = req.params;
+  try {
+    let following = [];
+    const followingIds = await User.findOne({ username }).select('following');
+    following = await User.find({ _id: { $in: followingIds.following } })
+      .select('-password')
+      .select('-updatedAt')
+      .select('-following')
+      .select('-followers');
+
+    res.status(200).json(following);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log('Error in getFollowing: ', error.message);
+  }
+};
+
 const signupUser = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
@@ -241,6 +277,8 @@ export {
   loginUser,
   logoutUser,
   followUnfollowUser,
+  getFollowers,
+  getFollowing,
   updateUser,
   getUserProfile,
   getSuggestedUsers,

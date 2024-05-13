@@ -4,6 +4,8 @@ import {
   loginUser,
   logoutUser,
   followUnfollowUser,
+  getFollowers,
+  getFollowing,
   updateUser,
   getUserProfile,
   getSuggestedUsers,
@@ -13,6 +15,8 @@ import protectRoute from '../middlewares/protectRoute.js';
 const router = express.Router();
 
 router.get('/profile/:query', getUserProfile);
+router.get('/:username/followers', getFollowers);
+router.get('/:username/following', getFollowing);
 router.get('/suggested', protectRoute, getSuggestedUsers);
 router.post('/signup', signupUser);
 router.post('/login', loginUser);
