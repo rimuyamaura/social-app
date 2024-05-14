@@ -18,21 +18,39 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      minLendgth: 6,
+      minLength: 6,
       required: true,
     },
     profilePic: {
       type: String,
       default: '',
     },
-    followers: {
-      type: [String],
-      default: [],
-    },
-    following: {
-      type: [String],
-      default: [],
-    },
+    followers: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        followDate: {
+          type: Date,
+          default: new Date(),
+        },
+      },
+    ],
+    following: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        followDate: {
+          type: Date,
+          default: new Date(),
+        },
+      },
+    ],
     bio: {
       type: String,
       default: '',

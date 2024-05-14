@@ -7,7 +7,6 @@ import {
   Stack,
   Text,
   WrapItem,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';

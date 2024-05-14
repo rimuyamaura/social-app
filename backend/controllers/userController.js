@@ -13,14 +13,12 @@ const getUserProfile = async (req, res) => {
 
     // query is userId
     if (mongoose.Types.ObjectId.isValid(query)) {
-      user = await User.findOne({ _id: query })
-        .select('-password')
-        .select('-updatedAt');
+      user = await User.findOne({ _id: query }).select('-password -updatedAt');
     } else {
       // query is username
-      user = await User.findOne({ username: query })
-        .select('-password')
-        .select('-updatedAt');
+      user = await User.findOne({ username: query }).select(
+        '-password -updatedAt'
+      );
     }
 
     if (!user) {
@@ -35,17 +33,26 @@ const getUserProfile = async (req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  const { username } = req.params;
   try {
     let followers = [];
-    const followerIds = await User.findOne({ username }).select('followers');
-    followers = await User.find({ _id: { $in: followerIds.followers } })
-      .select('-password')
-      .select('-updatedAt')
-      .select('-following')
-      .select('-followers');
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: 'User not found' });
+    }
 
-    res.status(200).json(followers);
+    const followerIds = user.followers.map((follow) => follow.userId);
+    followers = await User.find({ _id: { $in: followerIds } }).select(
+      '-password -updatedAt -following -followers'
+    );
+    const followersWithDates = followers.map((followerUser) => {
+      const followDate = user.followers.find((follow) =>
+        follow.userId.equals(followerUser._id)
+      ).followDate;
+      return { user: followerUser, followDate };
+    });
+
+    res.status(200).json(followersWithDates);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log('Error in getFollowers: ', error.message);
@@ -53,17 +60,26 @@ const getFollowers = async (req, res) => {
 };
 
 const getFollowing = async (req, res) => {
-  const { username } = req.params;
   try {
     let following = [];
-    const followingIds = await User.findOne({ username }).select('following');
-    following = await User.find({ _id: { $in: followingIds.following } })
-      .select('-password')
-      .select('-updatedAt')
-      .select('-following')
-      .select('-followers');
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: 'User not found' });
+    }
 
-    res.status(200).json(following);
+    const followingIds = user.following.map((follow) => follow.userId);
+    following = await User.find({ _id: { $in: followingIds } }).select(
+      '-password -updatedAt -following -followers'
+    );
+    const followingWithDates = following.map((followingUser) => {
+      const followDate = user.following.find((follow) =>
+        follow.userId.equals(followingUser._id)
+      ).followDate;
+      return { user: followingUser, followDate };
+    });
+
+    res.status(200).json(followingWithDates);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log('Error in getFollowing: ', error.message);
@@ -163,17 +179,26 @@ const followUnfollowUser = async (req, res) => {
     if (!userToModify || !currentUser)
       return res.status(400).json({ error: 'User not found' });
 
-    const isFollowing = currentUser.following.includes(id);
+    // const isFollowing = currentUser.following.includes(id);
+    const isFollowing = currentUser.following.some(
+      (follow) => follow.userId.toString() === id
+    );
 
     if (isFollowing) {
-      // Unfollow user
-      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } }); // remove us from thei followers list
-      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } }); // remove them from our following list
+      await User.findByIdAndUpdate(id, {
+        $pull: { followers: { userId: req.user._id } },
+      }); // remove us from their followers list
+      await User.findByIdAndUpdate(req.user._id, {
+        $pull: { following: { userId: id } },
+      }); // remove them from our following list
       res.status(200).json({ message: 'User unfollowed successfully' });
     } else {
-      // Follow user
-      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } }); // add us to their followers list
-      await User.findByIdAndUpdate(req.user._id, { $push: { following: id } }); // add them to our following list
+      await User.findByIdAndUpdate(id, {
+        $push: { followers: { userId: req.user._id } },
+      }); // add us to their followers list
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: { following: { userId: id } },
+      }); // add them to our following list
       res.status(200).json({ message: 'User followed successfully' });
     }
   } catch (error) {
@@ -250,16 +275,19 @@ const getSuggestedUsers = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const usersFollowedByYou = await User.findById(userId).select('following');
+    const user = await User.findById(userId).select('following');
+    const usersFollowedByYou = user.following.map((follow) =>
+      follow.userId.toString()
+    );
 
     const users = await User.aggregate([
       { $match: { _id: { $ne: userId } } },
       { $sample: { size: 10 } },
     ]);
 
-    const filteredUsers = users.filter(
-      (user) => !usersFollowedByYou.following.includes(user._id)
-    );
+    const filteredUsers = users.filter((user) => {
+      return !usersFollowedByYou.includes(user._id.toString());
+    });
     const suggestedUsers = filteredUsers.slice(0, 4);
 
     suggestedUsers.forEach((user) => {
