@@ -34,7 +34,7 @@ const ChatPage = () => {
 
   const { socket, onlineUsers } = useSocket();
 
-  console.log('selected: ', selectedConversation);
+  // console.log('selected: ', selectedConversation);
 
   useEffect(() => {
     socket?.on('messagesSeen', ({ conversationId }) => {

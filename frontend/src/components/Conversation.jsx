@@ -22,6 +22,8 @@ const Conversation = ({ conversation, isOnline }) => {
     selectedConversationAtom
   );
 
+  const gray300GrayDark = useColorModeValue('gray.300', 'gray.dark');
+
   // console.log('conversation: ', conversation);
   // console.log('lastMessage by: ', lastMessage.sender);
 
@@ -32,7 +34,7 @@ const Conversation = ({ conversation, isOnline }) => {
       p={'1'}
       _hover={{
         cursor: 'pointer',
-        bg: useColorModeValue('gray.300', 'gray.dark'),
+        bg: gray300GrayDark,
       }}
       borderRadius={'md'}
       onClick={() =>
@@ -44,11 +46,7 @@ const Conversation = ({ conversation, isOnline }) => {
           mock: conversation.mock,
         })
       }
-      bg={
-        selectedConversation?._id === conversation._id
-          ? useColorModeValue('gray.300', 'gray.dark')
-          : ''
-      }
+      bg={selectedConversation?._id === conversation._id ? gray300GrayDark : ''}
     >
       <WrapItem>
         <Avatar
