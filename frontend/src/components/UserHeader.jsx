@@ -64,14 +64,14 @@ const UserHeader = ({ user }) => {
         <Box>
           {user.profilePic && (
             <Avatar
-              name={user.name}
+              name={user.username}
               src={user.profilePic}
               size={{ base: 'lg', md: 'xl' }}
             />
           )}
           {!user.profilePic && (
             <Avatar
-              name={user.name}
+              name={user.username}
               src='https://bit.ly/broken-link'
               size={{ base: 'lg', md: 'xl' }}
             />

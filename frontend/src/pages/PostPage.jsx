@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   Box,
   Flex,
@@ -7,16 +10,13 @@ import {
   Divider,
   Spinner,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { Actions, Comment } from '../components';
-import { useParams, useNavigate } from 'react-router-dom';
-import { formatDistanceToNow } from 'date-fns';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { Actions, Comment } from '../components';
 import useGetUserProfile from '../hooks/useGetUserProfile';
 import useShowToast from '../hooks/useShowToast';
 import userAtom from '../atoms/userAtom';
 import postsAtom from '../atoms/postsAtom';
+import { formatDistanceToNow } from 'date-fns';
 
 const PostPage = () => {
   const currentUser = useRecoilValue(userAtom);

@@ -34,6 +34,10 @@ export default function UpdateProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (updating) return;
+    if (user.username === 'guest') {
+      showToast('Error', 'Guest user cannot update profile', 'error');
+      return;
+    }
     setUpdating(true);
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
@@ -156,6 +160,7 @@ export default function UpdateProfilePage() {
               _hover={{
                 bg: 'red.500',
               }}
+              onClick={() => window.history.back()}
             >
               Cancel
             </Button>

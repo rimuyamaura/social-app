@@ -16,7 +16,7 @@ const UserCard = ({ user }) => {
         }}
         onClick={() => navigate(`/${user.username}`)}
       >
-        <Avatar size={'lg'} src={user.profilePic} name={user.name}></Avatar>
+        <Avatar size={'lg'} src={user.profilePic} name={user.username}></Avatar>
         <Stack direction={'column'} fontSize={'sm'}>
           <Flex gap={2}>
             <Text fontWeight={'700'} display={'flex'} alignItems={'center'}>

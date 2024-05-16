@@ -55,7 +55,6 @@ const Post = ({ post, postedBy }) => {
   };
 
   if (!user) return null;
-  // console.log(posts);
 
   return (
     <>
@@ -64,7 +63,7 @@ const Post = ({ post, postedBy }) => {
           <Flex flexDirection={'column'} alignItems={'center'}>
             <Avatar
               size='md'
-              name={user.name}
+              name={user.username}
               src={user?.profilePic}
               onClick={(e) => {
                 e.preventDefault();

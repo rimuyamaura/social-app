@@ -117,6 +117,8 @@ const MessageContainer = () => {
     getMessages();
   }, [showToast, selectedConversation.userId, selectedConversation.mock]);
 
+  console.log(selectedConversation);
+
   return (
     <Flex
       flex='70'
@@ -125,9 +127,15 @@ const MessageContainer = () => {
       p={2}
       flexDirection={'column'}
     >
-      {/* Message header */}
       <Flex w={'full'} h={12} alignItems={'center'} gap={2}>
-        <Avatar src={selectedConversation.userProfilePic} size={'sm'} />
+        <Avatar
+          src={selectedConversation.userProfilePic}
+          size={'sm'}
+          name={selectedConversation.username}
+          // textColor={useColorModeValue('black', 'white')}
+          // border={'2px solid'}
+          // borderColor={useColorModeValue('gray.200', 'gray.600')}
+        />
         <Text display={'flex'} alignItems={'center'}>
           {selectedConversation.username}{' '}
           <Image src='/verified.png' w={4} h={4} ml={1} />

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Flex,
   Box,
@@ -13,7 +14,6 @@ import {
   useColorModeValue,
   Link,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useSetRecoilState } from 'recoil';
 import authScreenAtom from '../atoms/authAtom';
@@ -26,10 +26,10 @@ export default function LoginCard() {
     username: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const setUser = useSetRecoilState(userAtom);
   const showToast = useShowToast();
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -47,7 +47,31 @@ export default function LoginCard() {
         showToast('An error occured', data.error, 'error');
         return;
       }
+      localStorage.setItem('user-threads', JSON.stringify(data));
+      setUser(data);
+    } catch (error) {
+      showToast('An error occured', error, 'error');
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleDemo = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: 'guest', password: 'password' }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        showToast('An error occured', data.error, 'error');
+        return;
+      }
       localStorage.setItem('user-threads', JSON.stringify(data));
       setUser(data);
     } catch (error) {
@@ -112,9 +136,8 @@ export default function LoginCard() {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-            <Stack spacing={10} pt={2}>
+            <Stack spacing={3} pt={2}>
               <Button
-                loadingText='Logging in'
                 size='lg'
                 bg={useColorModeValue('gray.600', 'gray.700')}
                 color={'white'}
@@ -125,6 +148,19 @@ export default function LoginCard() {
                 isLoading={loading}
               >
                 Login
+              </Button>
+              <Button
+                loadingText='Logging in'
+                size='lg'
+                bg={useColorModeValue('green.300', 'green.400')}
+                color={'white'}
+                _hover={{
+                  bg: useColorModeValue('green.600', 'green.800'),
+                }}
+                onClick={handleDemo}
+                isLoading={loading}
+              >
+                Demo as Guest
               </Button>
             </Stack>
             <Stack pt={6}>
