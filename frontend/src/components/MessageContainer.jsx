@@ -128,7 +128,7 @@ const MessageContainer = () => {
     >
       <Flex w={'full'} h={12} alignItems={'center'} gap={2}>
         <Avatar
-          src={selectedConversation.userProfilePic || undefined}
+          src={selectedConversation.userProfilePic}
           size={'sm'}
           name={selectedConversation.username}
           bg={

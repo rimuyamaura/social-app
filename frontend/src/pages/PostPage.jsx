@@ -9,8 +9,9 @@ import {
   Image,
   Divider,
   Spinner,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Actions, Comment } from '../components';
 import useGetUserProfile from '../hooks/useGetUserProfile';
 import useShowToast from '../hooks/useShowToast';
@@ -26,6 +27,8 @@ const PostPage = () => {
   const showToast = useShowToast();
   const navigate = useNavigate();
   const currentPost = posts[0];
+
+  const gray400Gray700 = useColorModeValue('gray.400', 'gray.700');
 
   useEffect(() => {
     const getPost = async () => {
@@ -74,6 +77,7 @@ const PostPage = () => {
   }
 
   if (!currentPost) return null;
+  console.log('POST', currentPost);
 
   return (
     <>
@@ -87,22 +91,36 @@ const PostPage = () => {
             <Image src='/verified.png' w={4} h={4} ml={4} />
           </Flex>
         </Flex>
-        <Flex gap={4} alignItems={'center'}>
+        <Flex gap={2} alignItems={'center'}>
           <Text
             fontSize={'xs'}
             width={36}
             textAlign={'right'}
             color={'gray.light'}
+            mx={2}
           >
             {formatDistanceToNow(new Date(currentPost.createdAt))} ago
           </Text>
 
           {currentUser?._id === user._id && (
-            <DeleteIcon
-              size={20}
-              cursor={'pointer'}
-              onClick={handleDeletePost}
-            />
+            <>
+              <EditIcon
+                color={'gray.light'}
+                _hover={{
+                  color: gray400Gray700,
+                }}
+                cursor={'pointer'}
+              />
+              <DeleteIcon
+                size={20}
+                color={'gray.light'}
+                _hover={{
+                  color: gray400Gray700,
+                }}
+                cursor={'pointer'}
+                onClick={handleDeletePost}
+              />
+            </>
           )}
         </Flex>
       </Flex>

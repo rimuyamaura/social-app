@@ -10,6 +10,8 @@ const Message = ({ ownMessage, message }) => {
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
 
+  console.log('user message:', user);
+
   return (
     <>
       {ownMessage ? (
@@ -55,13 +57,13 @@ const Message = ({ ownMessage, message }) => {
             </Flex>
           )}
 
-          <Avatar name={user.username} src={user.profilePic} size={'sm'} />
+          <Avatar src={user.profilePic} name={user.username} size={'sm'} />
         </Flex>
       ) : (
         <Flex gap={2}>
           <Avatar
-            name={selectedConversation.username}
             src={selectedConversation.userProfilePic}
+            name={selectedConversation.username}
             size={'sm'}
           />
 

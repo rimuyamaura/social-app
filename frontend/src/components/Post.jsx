@@ -1,9 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Flex, Text, Avatar, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  Avatar,
+  Image,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Actions } from '../components';
 import { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import useShowToast from '../hooks/useShowToast';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from '../atoms/userAtom';
@@ -15,6 +22,8 @@ const Post = ({ post, postedBy }) => {
   const currentUser = useRecoilValue(userAtom);
   const showToast = useShowToast();
   const navigate = useNavigate();
+
+  const gray400Gray700 = useColorModeValue('gray.400', 'gray.700');
 
   useEffect(() => {
     const getUser = async () => {
@@ -125,18 +134,33 @@ const Post = ({ post, postedBy }) => {
                 </Text>
                 <Image src='/verified.png' w={4} h={4} ml={1} />
               </Flex>
-              <Flex gap={4} alignItems={'center'}>
+              <Flex gap={1} alignItems={'center'}>
                 <Text
                   fontSize={'xs'}
                   width={36}
                   textAlign={'right'}
                   color={'gray.light'}
+                  mx={1}
                 >
                   {formatDistanceToNow(new Date(post.createdAt))} ago
                 </Text>
 
                 {currentUser?._id === user._id && (
-                  <DeleteIcon size={20} onClick={handleDeletePost} />
+                  <>
+                    <EditIcon
+                      color={'gray.light'}
+                      _hover={{
+                        color: gray400Gray700,
+                      }}
+                    />
+                    <DeleteIcon
+                      color={'gray.light'}
+                      _hover={{
+                        color: gray400Gray700,
+                      }}
+                      onClick={handleDeletePost}
+                    />
+                  </>
                 )}
               </Flex>
             </Flex>

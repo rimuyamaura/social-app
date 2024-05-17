@@ -23,7 +23,11 @@ import useFollowUnfollow from '../hooks/useFollowUnfollow';
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
-  const currentUser = useRecoilValue(userAtom); // get the logged in user
+  const currentUser = useRecoilValue(userAtom);
+
+  const gray300GrayLight = useColorModeValue('gray.300', 'gray.light');
+  const gray400GrayLight = useColorModeValue('gray.400', 'gray.light');
+  const grayLightWhite = useColorModeValue('gray.light', 'white');
 
   // console.log(user);
 
@@ -157,18 +161,22 @@ const UserHeader = ({ user }) => {
       <Flex w={'full'}>
         <Flex
           flex={1}
-          borderBottom={'1.5px solid white'}
+          borderBottom={'1.5px solid'}
+          borderColor={grayLightWhite}
           justifyContent={'center'}
           pb='3'
           cursor={'pointer'}
         >
-          <Text fontWeight={'bold'}>Posts</Text>
+          <Text fontWeight={'bold'} color={grayLightWhite}>
+            Posts
+          </Text>
         </Flex>
         <Flex
           flex={1}
-          borderBottom={'1px solid gray'}
+          borderBottom={'1px solid'}
+          borderColor={gray300GrayLight}
           justifyContent={'center'}
-          color={'gray.light'}
+          color={gray400GrayLight}
           pb='3'
           cursor={'pointer'}
         >
