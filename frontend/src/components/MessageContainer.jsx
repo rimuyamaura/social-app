@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import {
   Flex,
   Text,
@@ -8,11 +9,9 @@ import {
   Skeleton,
   SkeletonCircle,
 } from '@chakra-ui/react';
-import Message from './Message';
-import MessageInput from './MessageInput';
-import { useEffect, useRef, useState } from 'react';
-import useShowToast from '../hooks/useShowToast';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Message, MessageInput } from '../components';
+import useShowToast from '../hooks/useShowToast';
 import {
   conversationsAtom,
   selectedConversationAtom,
@@ -117,7 +116,7 @@ const MessageContainer = () => {
     getMessages();
   }, [showToast, selectedConversation.userId, selectedConversation.mock]);
 
-  console.log(selectedConversation);
+  // console.log('SELECTED', selectedConversation);
 
   return (
     <Flex
@@ -129,15 +128,18 @@ const MessageContainer = () => {
     >
       <Flex w={'full'} h={12} alignItems={'center'} gap={2}>
         <Avatar
-          src={selectedConversation.userProfilePic}
+          src={selectedConversation.userProfilePic || undefined}
           size={'sm'}
           name={selectedConversation.username}
-          // textColor={useColorModeValue('black', 'white')}
-          // border={'2px solid'}
-          // borderColor={useColorModeValue('gray.200', 'gray.600')}
+          bg={
+            selectedConversation.userProfilePic
+              ? 'transparent'
+              : useColorModeValue('gray.300', 'gray.700')
+          }
+          textColor={useColorModeValue('black', 'white')}
         />
         <Text display={'flex'} alignItems={'center'}>
-          {selectedConversation.username}{' '}
+          {selectedConversation.username}
           <Image src='/verified.png' w={4} h={4} ml={1} />
         </Text>
       </Flex>

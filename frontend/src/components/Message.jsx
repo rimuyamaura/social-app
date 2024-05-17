@@ -1,6 +1,6 @@
-import { Flex, Avatar, Text, Box, Image, Skeleton } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { Flex, Avatar, Text, Box, Image, Skeleton } from '@chakra-ui/react';
 import { selectedConversationAtom } from '../atoms/messagesAtom';
 import userAtom from '../atoms/userAtom';
 import { BsCheck2All } from 'react-icons/bs';
@@ -55,15 +55,14 @@ const Message = ({ ownMessage, message }) => {
             </Flex>
           )}
 
-          <Avatar name={user.username} src={user.profilePic} w={7} h={7} />
+          <Avatar name={user.username} src={user.profilePic} size={'sm'} />
         </Flex>
       ) : (
         <Flex gap={2}>
           <Avatar
             name={selectedConversation.username}
             src={selectedConversation.userProfilePic}
-            w={7}
-            h={7}
+            size={'sm'}
           />
 
           {message.text && (
