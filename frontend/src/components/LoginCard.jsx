@@ -150,7 +150,6 @@ export default function LoginCard() {
                 Login
               </Button>
               <Button
-                loadingText='Logging in'
                 size='lg'
                 bg={useColorModeValue('green.300', 'green.400')}
                 color={'white'}
