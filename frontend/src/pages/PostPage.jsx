@@ -12,7 +12,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Actions, Comment } from '../components';
+import { Actions, Comment, EditPostBtn } from '../components';
 import useGetUserProfile from '../hooks/useGetUserProfile';
 import useShowToast from '../hooks/useShowToast';
 import userAtom from '../atoms/userAtom';
@@ -104,13 +104,7 @@ const PostPage = () => {
 
           {currentUser?._id === user._id && (
             <>
-              <EditIcon
-                color={'gray.light'}
-                _hover={{
-                  color: gray400Gray700,
-                }}
-                cursor={'pointer'}
-              />
+              <EditPostBtn post={currentPost} />
               <DeleteIcon
                 size={20}
                 color={'gray.light'}

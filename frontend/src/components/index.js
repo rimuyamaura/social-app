@@ -8,6 +8,7 @@ export { default as SignupCard } from './SignupCard';
 export { default as LoginCard } from './LoginCard';
 
 export { default as CreatePost } from './CreatePost';
+export { default as EditPostBtn } from './EditPostBtn';
 export { default as Post } from './Post';
 
 export { default as Conversation } from './Conversation';

@@ -26,8 +26,6 @@ const Header = () => {
   return (
     <Grid
       templateColumns='repeat(3, 1fr)'
-      // mt={3}
-      // mb={10}
       position={'fixed'}
       top={0}
       left={'50%'}

@@ -7,10 +7,10 @@ import {
   Image,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { Actions } from '../components';
+import { Actions, EditPostBtn } from '../components';
 import { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import useShowToast from '../hooks/useShowToast';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import userAtom from '../atoms/userAtom';
@@ -64,6 +64,7 @@ const Post = ({ post, postedBy }) => {
   };
 
   if (!user) return null;
+  console.log(post);
 
   return (
     <>
@@ -147,12 +148,7 @@ const Post = ({ post, postedBy }) => {
 
                 {currentUser?._id === user._id && (
                   <>
-                    <EditIcon
-                      color={'gray.light'}
-                      _hover={{
-                        color: gray400Gray700,
-                      }}
-                    />
+                    <EditPostBtn post={post} />
                     <DeleteIcon
                       color={'gray.light'}
                       _hover={{

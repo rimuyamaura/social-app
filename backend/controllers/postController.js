@@ -79,6 +79,54 @@ const createPost = async (req, res) => {
   }
 };
 
+const editPost = async (req, res) => {
+  try {
+    const { text } = req.body;
+    let { img } = req.body;
+    const { id: postId } = req.params;
+    const userId = req.user._id;
+
+    if (!text) {
+      return res
+        .status(400)
+        .json({ error: 'Please provide all required fields' });
+    }
+
+    let post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    if (post.postedBy.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'Unauthorized to edit post' });
+    }
+    const maxLength = 500;
+    if (text.length > maxLength) {
+      return res
+        .status(400)
+        .json({ error: `Text must be less than ${maxLength} characters` });
+    }
+
+    if (img) {
+      if (post.img) {
+        await cloudinary.uploader.destroy(
+          post.img.split('/').pop().split('.')[0]
+        );
+      }
+      const uploadedResponse = await cloudinary.uploader.upload(img);
+      img = uploadedResponse.secure_url;
+    }
+
+    post.text = text || post.text;
+    post.img = img;
+    post = await post.save();
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log('Error in EditPost: ', error.message);
+  }
+};
+
 const likeUnlikePost = async (req, res) => {
   try {
     const { id: postId } = req.params;
@@ -179,6 +227,7 @@ export {
   createPost,
   getPost,
   deletePost,
+  editPost,
   likeUnlikePost,
   replyToPost,
   getFeedPosts,

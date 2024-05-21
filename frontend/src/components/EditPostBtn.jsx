@@ -1,4 +1,3 @@
-import { AddIcon } from '@chakra-ui/icons';
 import {
   Button,
   CloseButton,
@@ -18,30 +17,35 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { EditIcon } from '@chakra-ui/icons';
+import { useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { BsFillImageFill } from 'react-icons/bs';
 import usePreviewImg from '../hooks/usePreviewImg';
 import useShowToast from '../hooks/useShowToast';
-import userAtom from '../atoms/userAtom';
 import postsAtom from '../atoms/postsAtom';
 
 const MAX_CHAR = 500;
 
-const CreatePost = () => {
-  const user = useRecoilValue(userAtom);
+const EditPostBtn = ({ post }) => {
   const [loading, setLoading] = useState(false);
-  const [postText, setPostText] = useState('');
+
+  const [postText, setPostText] = useState(post.text);
   const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
-  const { username } = useParams();
   const imageRef = useRef(null);
   const showToast = useShowToast();
 
+  const gray400Gray700 = useColorModeValue('gray.400', 'gray.700');
   const gray400GrayDark = useColorModeValue('gray.400', 'gray.dark');
+
+  useEffect(() => {
+    if (post.img) {
+      setImgUrl(post.img);
+    }
+  }, [post.img]);
 
   const handleTextChange = (e) => {
     const inputText = e.target.value;
@@ -56,41 +60,35 @@ const CreatePost = () => {
     }
   };
 
-  const handleCreatePost = async () => {
+  const handleEditPost = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/posts/create', {
-        method: 'POST',
+      const res = await fetch(`/api/posts/edit/${post._id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          postedBy: user._id,
-          text: postText || '',
+          text: postText,
           img: imgUrl,
         }),
       });
 
       const data = await res.json();
       if (data.error) {
-        useShowToast('An error has occured', data.error, 'error');
+        showToast('An error has occured', data.error, 'error');
         return;
       }
-      showToast('Success', 'Your post has been created', 'success');
-      if (username === user.username) {
-        setPosts([data, ...posts]);
-      }
 
+      showToast('Success', 'Your post has been updated', 'success');
+
+      const updatedPosts = posts.map((p) => (p._id === data._id ? data : p));
+
+      setPosts(updatedPosts);
       onClose();
-      setPostText('');
-      setImgUrl('');
-    } catch (error) {
-      // showToast('An error has occured', error.message, 'error');
-      showToast(
-        'An error has occured',
-        'Please make sure you have input all areas correctly',
-        'error'
-      );
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to edit post', 'error');
     } finally {
       setLoading(false);
     }
@@ -98,30 +96,27 @@ const CreatePost = () => {
 
   return (
     <>
-      <Button
-        position={'fixed'}
-        bottom={10}
-        right={5}
-        bg={useColorModeValue('gray.300', 'gray.dark')}
-        onClick={onOpen}
-        size={{ base: 'sm', sm: 'md' }}
-      >
-        <AddIcon />
-      </Button>
+      <EditIcon
+        color={'gray.light'}
+        _hover={{
+          color: gray400Gray700,
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          onOpen();
+        }}
+        cursor={'pointer'}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
 
         <ModalContent bg={useColorModeValue('white', 'gray.dark')}>
-          <ModalHeader>Create Post</ModalHeader>
+          <ModalHeader>Edit Post</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <Textarea
-                placeholder='Post content goes here..'
-                onChange={handleTextChange}
-                value={postText}
-              />
+              <Textarea onChange={handleTextChange} value={postText} />
               <Text
                 fontSize='xs'
                 fontWeight='bold'
@@ -167,10 +162,10 @@ const CreatePost = () => {
             <Button
               colorScheme='green'
               mr={2}
-              onClick={handleCreatePost}
+              onClick={handleEditPost}
               isLoading={loading}
             >
-              Post
+              Update
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -178,4 +173,4 @@ const CreatePost = () => {
     </>
   );
 };
-export default CreatePost;
+export default EditPostBtn;
