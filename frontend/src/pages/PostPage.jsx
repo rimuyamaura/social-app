@@ -11,7 +11,7 @@ import {
   Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { Actions, Comment, EditPostBtn } from '../components';
 import useGetUserProfile from '../hooks/useGetUserProfile';
 import useShowToast from '../hooks/useShowToast';
@@ -47,6 +47,7 @@ const PostPage = () => {
       }
     };
     getPost();
+    console.log('POST', currentPost);
   }, [pid, showToast, setPosts]);
 
   const handleDeletePost = async () => {
@@ -77,18 +78,18 @@ const PostPage = () => {
   }
 
   if (!currentPost) return null;
-  console.log('POST', currentPost);
+  // console.log('POST', currentPost);
 
   return (
     <>
       <Flex>
         <Flex w={'full'} alignItems={'center'} gap={3}>
           <Avatar src={user.profilePic} size={'md'} name={user.username} />
-          <Flex>
+          <Flex alignItems='center'>
             <Text fontSize={'sm'} fontWeight={'bold'}>
               {user.username}
             </Text>
-            <Image src='/verified.png' w={4} h={4} ml={4} />
+            <Image src='/verified.png' w={4} h={4} ml={1} />
           </Flex>
         </Flex>
         <Flex gap={2} alignItems={'center'}>
@@ -159,6 +160,7 @@ const PostPage = () => {
             reply._id ===
             currentPost.replies[currentPost.replies.length - 1]._id
           }
+          postId={currentPost._id}
         />
       ))}
     </>

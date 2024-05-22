@@ -64,7 +64,7 @@ const Post = ({ post, postedBy }) => {
   };
 
   if (!user) return null;
-  console.log(post);
+  // console.log(post);
 
   return (
     <>

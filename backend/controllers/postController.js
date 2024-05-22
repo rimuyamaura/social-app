@@ -183,6 +183,40 @@ const replyToPost = async (req, res) => {
   }
 };
 
+const deleteReply = async (req, res) => {
+  try {
+    const { postId, replyId } = req.params;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    const reply = post.replies.find(
+      (reply) => reply._id.toString() === replyId
+    );
+    if (!reply) {
+      return res.status(404).json({ error: 'Reply not found' });
+    }
+    if (reply.userId.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'Unauthorized to delete reply' });
+    }
+
+    // console.log('reply:', reply, 'from post:', post, 'deleted');
+
+    post.replies = post.replies.filter(
+      (reply) => reply._id.toString() !== replyId
+    );
+    await post.save();
+
+    res.status(200).json({ message: 'Reply deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log('Error in deleteReply: ', error.message);
+  }
+};
+
 const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -202,7 +236,10 @@ const deletePost = async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ message: 'Post deleted successfully' });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log('Error in deletePost: ', error.message);
+  }
 };
 
 const getUserPosts = async (req, res) => {
@@ -230,6 +267,7 @@ export {
   editPost,
   likeUnlikePost,
   replyToPost,
+  deleteReply,
   getFeedPosts,
   getUserPosts,
 };

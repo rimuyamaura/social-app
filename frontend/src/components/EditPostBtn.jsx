@@ -38,6 +38,7 @@ const EditPostBtn = ({ post }) => {
   const imageRef = useRef(null);
   const showToast = useShowToast();
 
+  const gray200Gray700 = useColorModeValue('gray.200', 'gray.700');
   const gray400Gray700 = useColorModeValue('gray.400', 'gray.700');
   const gray400GrayDark = useColorModeValue('gray.400', 'gray.dark');
 
@@ -151,7 +152,7 @@ const EditPostBtn = ({ post }) => {
                   position={'absolute'}
                   top={2}
                   right={2}
-                  bg={useColorModeValue('gray.200', 'gray.700')}
+                  bg={gray200Gray700}
                   _hover={{ bg: gray400GrayDark }}
                 />
               </Flex>
