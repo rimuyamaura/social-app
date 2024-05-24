@@ -19,8 +19,6 @@ const Comment = ({ reply, lastReply, postId }) => {
 
   const gray400Gray700 = useColorModeValue('gray.400', 'gray.700');
 
-  // console.log('reply:', reply);
-
   const handleDeleteReply = async () => {
     try {
       if (!window.confirm('Are you sure you want to delete this reply?'))

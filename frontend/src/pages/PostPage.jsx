@@ -47,7 +47,6 @@ const PostPage = () => {
       }
     };
     getPost();
-    console.log('POST', currentPost);
   }, [pid, showToast, setPosts]);
 
   const handleDeletePost = async () => {
@@ -152,9 +151,9 @@ const PostPage = () => {
         </>
       )}
 
-      {currentPost.replies.map((reply) => (
+      {currentPost.replies.map((reply, i) => (
         <Comment
-          key={reply._id}
+          key={i}
           reply={reply}
           lastReply={
             reply._id ===

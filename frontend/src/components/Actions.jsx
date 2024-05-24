@@ -116,12 +116,14 @@ const Actions = ({ post }) => {
       showToast('Success', 'Reply posted successfully', 'success');
       onClose();
       setReply('');
+      window.location.reload(); // reload page to register new reply._id
     } catch (error) {
       showToast('An error has occured', error.message, 'error');
     } finally {
       setIsReplying(false);
     }
   };
+
   return (
     <Flex flexDirection='column'>
       <Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
