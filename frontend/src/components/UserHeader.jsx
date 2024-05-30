@@ -25,10 +25,6 @@ const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom);
 
-  const gray300GrayLight = useColorModeValue('gray.300', 'gray.light');
-  const gray400GrayLight = useColorModeValue('gray.400', 'gray.light');
-  const grayLightWhite = useColorModeValue('gray.light', 'white');
-
   // console.log(user);
 
   const { handleFollowUnfollow, updating, following } = useFollowUnfollow(user);
@@ -46,7 +42,7 @@ const UserHeader = ({ user }) => {
   };
 
   return (
-    <VStack gap={4} alignItems={'start'}>
+    <VStack gap={4} alignItems={'start'} pb={4}>
       <Flex justifyContent={'space-between'} w={'full'}>
         <Box>
           <Text fontSize={'2xl'} fontWeight={'bold'} mb={2}>
@@ -155,32 +151,6 @@ const UserHeader = ({ user }) => {
               </Portal>
             </Menu>
           </Box>
-        </Flex>
-      </Flex>
-
-      <Flex w={'full'}>
-        <Flex
-          flex={1}
-          borderBottom={'1.5px solid'}
-          borderColor={grayLightWhite}
-          justifyContent={'center'}
-          pb='3'
-          cursor={'pointer'}
-        >
-          <Text fontWeight={'bold'} color={grayLightWhite}>
-            Posts
-          </Text>
-        </Flex>
-        <Flex
-          flex={1}
-          borderBottom={'1px solid'}
-          borderColor={gray300GrayLight}
-          justifyContent={'center'}
-          color={gray400GrayLight}
-          pb='3'
-          cursor={'pointer'}
-        >
-          <Text fontWeight={'bold'}>Replies</Text>
         </Flex>
       </Flex>
     </VStack>
