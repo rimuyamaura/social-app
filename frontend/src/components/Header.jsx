@@ -122,7 +122,7 @@ const Header = () => {
             <IconButton
               aria-label='Logout'
               icon={<FiLogOut size={20} />}
-              colorScheme='green'
+              colorScheme={'green'}
               size={'xs'}
               p={1}
               onClick={logout}

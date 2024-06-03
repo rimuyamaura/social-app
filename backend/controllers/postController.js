@@ -154,6 +154,37 @@ const likeUnlikePost = async (req, res) => {
   }
 };
 
+const getUserReplies = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const replies = [];
+
+    const posts = await Post.find({
+      replies: { $elemMatch: { userId: user._id } },
+    }).sort({ createdAt: -1 });
+
+    posts.forEach((post) => {
+      post.replies.forEach((reply) => {
+        if (reply.userId.toString() === user._id.toString()) {
+          replies.push({
+            ...reply._doc,
+            postId: post._id,
+          });
+        }
+      });
+    });
+
+    res.status(200).json(replies);
+  } catch (error) {
+    res.status500().json({ error: error.message });
+    console.log('Error in getUserReplies: ', error.message);
+  }
+};
+
 const replyToPost = async (req, res) => {
   try {
     const { text } = req.body;
@@ -266,6 +297,7 @@ export {
   deletePost,
   editPost,
   likeUnlikePost,
+  getUserReplies,
   replyToPost,
   deleteReply,
   getFeedPosts,

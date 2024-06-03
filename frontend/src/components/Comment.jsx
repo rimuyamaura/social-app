@@ -12,7 +12,7 @@ import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
 
 // TODO ADD name={reply.name} in Avatar, add name field to reply object. So we can see initials of user as if user has no profilepic
-const Comment = ({ reply, lastReply, postId }) => {
+const Comment = ({ reply, lastReply = false, postId }) => {
   const currentUser = useRecoilValue(userAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const showToast = useShowToast();

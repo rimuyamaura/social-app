@@ -102,9 +102,10 @@ const CreatePost = () => {
         position={'fixed'}
         bottom={10}
         right={5}
-        bg={useColorModeValue('gray.300', 'gray.dark')}
+        // bg={useColorModeValue('gray.300', 'gray.dark')}
         onClick={onOpen}
         size={{ base: 'sm', sm: 'md' }}
+        colorScheme={'blue'}
       >
         <AddIcon />
       </Button>
@@ -165,7 +166,7 @@ const CreatePost = () => {
 
           <ModalFooter>
             <Button
-              colorScheme='green'
+              colorScheme={'blue'}
               mr={2}
               onClick={handleCreatePost}
               isLoading={loading}
