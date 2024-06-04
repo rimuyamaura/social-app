@@ -5,11 +5,11 @@ Deployed at: https://social-app-b8kg.onrender.com
 
 ## Features
 
-- Create/Delete posts with images
+- Create/Edit/Delete posts with images
 - Like/Unlike and comment to posts
-- Follow/Unfollow users to see their posts in feed
-- Realtime chat application that can send images with seen/unseen status, notification alerts
-- Login/Register authentication using JWT tokens
+- Follow/Unfollow users to see their posts in your feed, and view other user's followers via their profile page
+- Realtime chat that can send images with seen/unseen status, notification alerts
+- Login/Register authentication using JWT tokens, and ability to demo the application as a guest user
 
 ## Technologies
 
@@ -48,9 +48,7 @@ npm start
 
 ## Bugs/Future implementations:
 
-- Add ability to login as Test User for demo
-- Implement Replies tab in profile
-- Gives wrong error message (Invalid hook call. Hooks can only be called inside of the body of a function component.) when attempting to post without text. TEMP FIXED
+- Record creation dates for replies so replies can be sorted by date
 
 ## Links
 

@@ -64,6 +64,8 @@ const UserPage = () => {
   }
   if (!user && !loading) return <h1> User not found</h1>;
 
+  console.log('replies:', replies);
+
   return (
     <>
       <UserHeader user={user} />
@@ -121,6 +123,7 @@ const UserPage = () => {
         </Flex>
       )}
       {contentToShow === 'posts' &&
+        !fetching &&
         posts.map((post) => (
           <Post key={post._id} post={post} postedBy={post.postedBy} />
         ))}
@@ -134,8 +137,15 @@ const UserPage = () => {
         </Flex>
       )}
       {contentToShow === 'replies' &&
+        !fetching &&
         replies.map((reply) => (
-          <Comment key={reply._id} reply={reply} postId={reply.postId} />
+          <Comment
+            key={reply._id}
+            reply={reply}
+            postId={reply.postId}
+            postedBy={reply.postedBy}
+            link={true}
+          />
         ))}
       {/* NEED a way to fetch all user comments with reply object, postID, *lastReply can be set manually)  */}
     </>

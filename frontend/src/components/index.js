@@ -3,6 +3,7 @@ export { default as UserHeader } from './UserHeader';
 export { default as UserCard } from './UserCard';
 export { default as Actions } from './Actions';
 export { default as Comment } from './Comment';
+export { default as ReplyCard } from './ReplyCard';
 
 export { default as SignupCard } from './SignupCard';
 export { default as LoginCard } from './LoginCard';

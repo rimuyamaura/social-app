@@ -173,6 +173,7 @@ const getUserReplies = async (req, res) => {
           replies.push({
             ...reply._doc,
             postId: post._id,
+            postedBy: post.postedBy,
           });
         }
       });
@@ -223,6 +224,7 @@ const deleteReply = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
     }
+    console.log('found post');
 
     const reply = post.replies.find(
       (reply) => reply._id.toString() === replyId
