@@ -64,7 +64,7 @@ const UserPage = () => {
   }
   if (!user && !loading) return <h1> User not found</h1>;
 
-  console.log('replies:', replies);
+  // console.log('replies:', replies);
 
   return (
     <>
@@ -114,13 +114,14 @@ const UserPage = () => {
         </Flex>
       </Flex>
 
-      {contentToShow === 'posts' && !fetching && posts.length === 0 && (
-        <h1>User has not posted.</h1>
-      )}
-      {contentToShow === 'posts' && fetching && (
+      {fetching && (
         <Flex justifyContent='center' my={12}>
           <Spinner size='xl' />
         </Flex>
+      )}
+
+      {contentToShow === 'posts' && !fetching && posts.length === 0 && (
+        <h1>User has not posted.</h1>
       )}
       {contentToShow === 'posts' &&
         !fetching &&
@@ -130,11 +131,6 @@ const UserPage = () => {
 
       {contentToShow === 'replies' && !fetching && replies.length === 0 && (
         <h1>User has not replied to any posts.</h1>
-      )}
-      {contentToShow === 'replies' && fetching && (
-        <Flex justifyContent='center' my={12}>
-          <Spinner size='xl' />
-        </Flex>
       )}
       {contentToShow === 'replies' &&
         !fetching &&
@@ -147,7 +143,6 @@ const UserPage = () => {
             link={true}
           />
         ))}
-      {/* NEED a way to fetch all user comments with reply object, postID, *lastReply can be set manually)  */}
     </>
   );
 };

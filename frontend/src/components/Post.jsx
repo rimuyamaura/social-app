@@ -6,8 +6,9 @@ import {
   Avatar,
   Image,
   useColorModeValue,
+  Spinner,
 } from '@chakra-ui/react';
-import { Actions, EditPostBtn } from '../components';
+import { Actions, EditPostBtn, LoadingSkeleton } from '../components';
 import { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { DeleteIcon } from '@chakra-ui/icons';
@@ -63,7 +64,9 @@ const Post = ({ post, postedBy }) => {
     }
   };
 
-  if (!user) return null;
+  // if (!user) return null;
+  if (!user) return <LoadingSkeleton />;
+
   // console.log(post);
 
   return (

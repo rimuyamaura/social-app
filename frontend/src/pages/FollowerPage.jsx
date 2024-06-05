@@ -78,17 +78,14 @@ const FollowerPage = () => {
           justifyContent={'center'}
           pb='3'
           cursor={'pointer'}
+          onClick={() => navigate(`/${user.username}/following`)}
         >
           {following === 'following' ? (
             <Text fontWeight={'bold'} color={grayLightWhite}>
               Following
             </Text>
           ) : (
-            <Text
-              fontWeight={'bold'}
-              color={gray400GrayLight}
-              onClick={() => navigate(`/${user.username}/following`)}
-            >
+            <Text fontWeight={'bold'} color={gray400GrayLight}>
               Following
             </Text>
           )}
@@ -102,17 +99,14 @@ const FollowerPage = () => {
           justifyContent={'center'}
           pb='3'
           cursor={'pointer'}
+          onClick={() => navigate(`/${user.username}/followers`)}
         >
           {following === 'followers' ? (
             <Text fontWeight={'bold'} color={grayLightWhite}>
               Followers
             </Text>
           ) : (
-            <Text
-              fontWeight={'bold'}
-              color={gray400GrayLight}
-              onClick={() => navigate(`/${user.username}/followers`)}
-            >
+            <Text fontWeight={'bold'} color={gray400GrayLight}>
               Followers
             </Text>
           )}
@@ -138,8 +132,8 @@ const FollowerPage = () => {
           </Flex>
         ))
       ) : usersList.length > 0 ? (
-        usersList.map((userInfo) => (
-          <UserCard key={userInfo._id} user={userInfo.user} />
+        usersList.map((userInfo, i) => (
+          <UserCard key={i} user={userInfo.user} />
         ))
       ) : (
         <Flex justifyContent='center'>

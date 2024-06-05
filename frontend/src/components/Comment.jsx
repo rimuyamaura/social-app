@@ -5,11 +5,16 @@ import {
   Text,
   Link,
   useColorModeValue,
+  Box,
+  SkeletonCircle,
+  Skeleton,
+  Spinner,
 } from '@chakra-ui/react';
 import { DeleteIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { LoadingSkeleton } from '.';
 import postsAtom from '../atoms/postsAtom';
 import userAtom from '../atoms/userAtom';
 import useShowToast from '../hooks/useShowToast';
@@ -54,7 +59,7 @@ const Comment = ({
       if (!window.confirm('Are you sure you want to delete this reply?'))
         return;
 
-      console.log(postId, reply._id);
+      // console.log(postId, reply._id);
 
       const res = await fetch(`/api/posts/reply/${postId}/${reply._id}`, {
         method: 'DELETE',
@@ -82,9 +87,9 @@ const Comment = ({
     }
   };
 
-  if (link && !postOwner) return null;
+  if (link && !postOwner) return <LoadingSkeleton />;
 
-  console.log('reply:', reply);
+  // console.log('reply:', reply);
 
   return (
     <>

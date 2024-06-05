@@ -95,6 +95,8 @@ const EditPostBtn = ({ post }) => {
     }
   };
 
+  console.log(postText, imgUrl, post._id);
+
   return (
     <>
       <EditIcon
@@ -148,6 +150,7 @@ const EditPostBtn = ({ post }) => {
                 <CloseButton
                   onClick={() => {
                     setImgUrl('');
+                    console.log('close and empty imgurl');
                   }}
                   position={'absolute'}
                   top={2}

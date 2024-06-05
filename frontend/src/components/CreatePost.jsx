@@ -42,6 +42,7 @@ const CreatePost = () => {
   const showToast = useShowToast();
 
   const gray400GrayDark = useColorModeValue('gray.400', 'gray.dark');
+  const gray200gray700 = useColorModeValue('gray.200', 'gray.700');
 
   const handleTextChange = (e) => {
     const inputText = e.target.value;
@@ -157,7 +158,7 @@ const CreatePost = () => {
                   position={'absolute'}
                   top={2}
                   right={2}
-                  bg={useColorModeValue('gray.200', 'gray.700')}
+                  bg={gray200gray700}
                   _hover={{ bg: gray400GrayDark }}
                 />
               </Flex>

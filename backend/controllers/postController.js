@@ -106,7 +106,7 @@ const editPost = async (req, res) => {
         .json({ error: `Text must be less than ${maxLength} characters` });
     }
 
-    if (img) {
+    if (img && post.img !== img) {
       if (post.img) {
         await cloudinary.uploader.destroy(
           post.img.split('/').pop().split('.')[0]
@@ -114,10 +114,15 @@ const editPost = async (req, res) => {
       }
       const uploadedResponse = await cloudinary.uploader.upload(img);
       img = uploadedResponse.secure_url;
+      post.img = img;
+    } else if (!img && post.img) {
+      await cloudinary.uploader.destroy(
+        post.img.split('/').pop().split('.')[0]
+      );
+      post.img = null;
     }
 
     post.text = text || post.text;
-    post.img = img;
     post = await post.save();
 
     res.status(200).json(post);
