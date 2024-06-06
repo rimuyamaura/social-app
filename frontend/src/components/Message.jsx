@@ -10,7 +10,7 @@ const Message = ({ ownMessage, message }) => {
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  console.log('user message:', user);
+  // console.log('user message:', user);
 
   return (
     <>

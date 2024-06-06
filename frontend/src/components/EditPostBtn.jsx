@@ -95,7 +95,7 @@ const EditPostBtn = ({ post }) => {
     }
   };
 
-  console.log(postText, imgUrl, post._id);
+  // console.log(postText, imgUrl, post._id);
 
   return (
     <>
@@ -125,7 +125,7 @@ const EditPostBtn = ({ post }) => {
                 fontWeight='bold'
                 textAlign={'right'}
                 m={'1'}
-                color={useColorModeValue('gray.400', 'gray.900')}
+                color={useColorModeValue('gray.400', 'gray.600')}
               >
                 {remainingChar}/{MAX_CHAR}
               </Text>
@@ -150,7 +150,7 @@ const EditPostBtn = ({ post }) => {
                 <CloseButton
                   onClick={() => {
                     setImgUrl('');
-                    console.log('close and empty imgurl');
+                    // console.log('close and empty imgurl');
                   }}
                   position={'absolute'}
                   top={2}

@@ -129,7 +129,7 @@ const CreatePost = () => {
                 fontWeight='bold'
                 textAlign={'right'}
                 m={'1'}
-                color={useColorModeValue('gray.400', 'gray.900')}
+                color={useColorModeValue('gray.400', 'gray.600')}
               >
                 {remainingChar}/{MAX_CHAR}
               </Text>

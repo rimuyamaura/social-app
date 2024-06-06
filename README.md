@@ -19,8 +19,10 @@ Backend: Express.js, MongoDB, Cloudinary, JWT, Socket.IO
 
 ## Screenshots
 
-![Homepage](/frontend/src/assets/home.PNG)
+![Homepage](/frontend/src/assets/homeDark.PNG)
+![LightHomepage](/frontend/src/assets/homeLight.PNG)
 ![Profile](/frontend/src/assets/profile.PNG)
+![Following](/frontend/src/assets/following.PNG)
 ![Chat](/frontend/src/assets/chat.PNG)
 ![Login](/frontend/src/assets/login.PNG)
 
@@ -54,3 +56,4 @@ npm start
 
 - [As a Programmer Youtube Channel](https://www.youtube.com/@asaprogrammer_)
 - [Chakra UI Docs](https://v2.chakra-ui.com)
+- [SocketUI Docs](https://socket.io/docs/v4/)
